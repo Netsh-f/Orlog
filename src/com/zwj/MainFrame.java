@@ -57,87 +57,89 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String command = e.getActionCommand();
                 switch (command) {
-                    case "Play" -> {
+                    case "Play":
                         ButtonAction.startBtnAction();
-                    }
-                    case "正面" -> {
+                        break;
+                    case "正面":
                         ButtonAction.coinBtn1Action();
-                    }
-                    case "反面" -> {
+                        break;
+                    case "反面":
                         ButtonAction.coinBtn2Action();
-                    }
-                    case "确定" -> {
+                        break;
+                    case "确定":
                         ButtonAction.okBtnAction();
-                    }
-                    case "是" -> {
+                        break;
+                    case "是":
                         ButtonAction.godsGraceAction1();
-                    }
-                    case "否" -> {
+                        break;
+                    case "否":
                         ButtonAction.godsGraceAction2();
-                    }
-                    case "p1Thor" -> {
+                        break;
+                    case "p1Thor":
                         ButtonAction.godsGraceNum1();
-                    }
-                    case "p1Heimdallr" -> {
+                        break;
+                    case "p1Heimdallr":
                         ButtonAction.godsGraceNum2();
-                    }
-                    case "p2Thor" -> {
+                        break;
+                    case "p2Thor":
                         ButtonAction.godsGraceNum1();
-                    }
-                    case "p2Heimdallr" -> {
+                        break;
+                    case "p2Heimdallr":
                         ButtonAction.godsGraceNum2();
-                    }
-                    case "level1" -> {
+                        break;
+                    case "level1":
                         ButtonAction.levelAction(1);
-                    }
-                    case "level2" -> {
+                        break;
+                    case "level2":
                         ButtonAction.levelAction(2);
-                    }
-                    case "level3" -> {
+                        break;
+                    case "level3":
                         ButtonAction.levelAction(3);
-                    }
-                    case "100" -> {
+                        break;
+                    case "100":
                         ButtonAction.diceSelectdAction(Player.player1, 0);
-                    }
-                    case "101" -> {
+                        break;
+                    case "101":
                         ButtonAction.diceSelectdAction(Player.player1, 1);
-                    }
-                    case "102" -> {
+                        break;
+                    case "102":
                         ButtonAction.diceSelectdAction(Player.player1, 2);
-                    }
-                    case "103" -> {
+                        break;
+                    case "103":
                         ButtonAction.diceSelectdAction(Player.player1, 3);
-                    }
-                    case "104" -> {
+                        break;
+                    case "104":
                         ButtonAction.diceSelectdAction(Player.player1, 4);
-                    }
-                    case "105" -> {
+                        break;
+                    case "105":
                         ButtonAction.diceSelectdAction(Player.player1, 5);
-                    }
-                    case "200" -> {
+                        break;
+                    case "200":
                         ButtonAction.diceSelectdAction(Player.player2, 0);
-                    }
-                    case "201" -> {
+                        break;
+                    case "201":
                         ButtonAction.diceSelectdAction(Player.player2, 1);
-                    }
-                    case "202" -> {
+                        break;
+                    case "202":
                         ButtonAction.diceSelectdAction(Player.player2, 2);
-                    }
-                    case "203" -> {
+                        break;
+                    case "203":
                         ButtonAction.diceSelectdAction(Player.player2, 3);
-                    }
-                    case "204" -> {
+                        break;
+                    case "204":
                         ButtonAction.diceSelectdAction(Player.player2, 4);
-                    }
-                    case "205" -> {
+                        break;
+                    case "205":
                         ButtonAction.diceSelectdAction(Player.player2, 5);
-                    }
+                        break;
                 }
             }
         };
 
         mainGamePanel.setLayout(null);
-        for (int i = 0; i < 6; i++) {
+        for (
+                int i = 0;
+                i < 6; i++) {
             diceLabels1[i] = new DiceJLabel("label" + i, JLabel.CENTER);
             diceLabels1[i].setOpaque(false);
             diceLabels1[i].setFont(new Font("黑体", Font.PLAIN, 20));
@@ -146,7 +148,9 @@ public class MainFrame extends JFrame {
             diceLabels1[i].setVisible(false);
             mainGamePanel.add(diceLabels1[i]);
         }
-        for (int i = 0; i < 6; i++) {
+        for (
+                int i = 0;
+                i < 6; i++) {
             diceLabels2[i] = new DiceJLabel("Label" + i, JLabel.CENTER);
             diceLabels2[i].setOpaque(false);
             diceLabels2[i].setFont(new Font("黑体", Font.PLAIN, 20));
@@ -156,7 +160,9 @@ public class MainFrame extends JFrame {
             mainGamePanel.add(diceLabels2[i]);
         }//骰子diceLabels
 
-        for (int i = 0; i < 12; i++) {
+        for (
+                int i = 0;
+                i < 12; i++) {
             ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/none.png"));
             diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
             settleLabels1[i] = new DiceJLabel(diceImageIcon);
@@ -166,7 +172,9 @@ public class MainFrame extends JFrame {
             settleLabels1[i].setBounds(150 + 80 * i, 270, 120, 75);
             mainGamePanel.add(settleLabels1[i]);
         }
-        for (int i = 0; i < 12; i++) {
+        for (
+                int i = 0;
+                i < 12; i++) {
             ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/none.png"));
             diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
             settleLabels2[i] = new DiceJLabel(diceImageIcon);
@@ -177,7 +185,9 @@ public class MainFrame extends JFrame {
             mainGamePanel.add(settleLabels2[i]);
         }//settleLabels
 
-        for (int i = 0; i < 3; i++) {
+        for (
+                int i = 0;
+                i < 3; i++) {
             for (int j = 0; j < 5; j++) {
                 int k = i * 5 + j;
                 ImageIcon stoneImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/stone" + k + ".png"));
@@ -186,11 +196,14 @@ public class MainFrame extends JFrame {
                 hpLabels1[k].setOpaque(false);
 //                hpLabels1[k].setFont(new Font("黑体", Font.PLAIN, 12));
 //                hpLabels1[k].setBackground(Color.RED);
+                hpLabels1[k].setVisible(false);
                 hpLabels1[k].setBounds(50 + 50 * j, 30 + 50 * i, 40, 50);
                 mainGamePanel.add(hpLabels1[k]);
             }
         }
-        for (int i = 0; i < 3; i++) {
+        for (
+                int i = 0;
+                i < 3; i++) {
             for (int j = 0; j < 5; j++) {
                 int k = i * 5 + j;
                 ImageIcon stoneImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/stone" + k + ".png"));
@@ -199,12 +212,15 @@ public class MainFrame extends JFrame {
                 hpLabels2[k].setOpaque(false);
 //                hpLabels2[k].setFont(new Font("黑体", Font.PLAIN, 12));
 //                hpLabels2[k].setBackground(Color.RED);
+                hpLabels2[k].setVisible(false);
                 hpLabels2[k].setBounds(50 + 50 * j, 580 + 50 * i, 40, 50);
                 mainGamePanel.add(hpLabels2[k]);
             }
         }//hp
 
-        for (int i = 0; i < 2; i++) {
+        for (
+                int i = 0;
+                i < 2; i++) {
 //            godsLabels1[i] = new GodsJLabel("Gods" + i, JLabel.CENTER);
             ImageIcon godsImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/gods" + (i + 1) + ".png"));
             godsImageIcon.setImage(godsImageIcon.getImage().getScaledInstance(100, 175, Image.SCALE_DEFAULT));
@@ -213,10 +229,12 @@ public class MainFrame extends JFrame {
             godsLabels1[i].setFont(new Font("黑体", Font.PLAIN, 30));
             godsLabels1[i].setBackground(Color.GRAY);
             godsLabels1[i].setBounds(1200 + 100 * i, 20, 100, 170);
-//            godsLabels1[i].setLocation(970 + 100 * i, 20);
+            godsLabels1[i].setVisible(false);
             mainGamePanel.add(godsLabels1[i]);
         }
-        for (int i = 0; i < 2; i++) {
+        for (
+                int i = 0;
+                i < 2; i++) {
             ImageIcon godsImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/gods" + (i + 1) + ".png"));
             godsImageIcon.setImage(godsImageIcon.getImage().getScaledInstance(100, 175, Image.SCALE_DEFAULT));
             godsLabels2[i] = new GodsJLabel(godsImageIcon);
@@ -224,10 +242,13 @@ public class MainFrame extends JFrame {
             godsLabels2[i].setFont(new Font("黑体", Font.PLAIN, 30));
             godsLabels2[i].setBackground(Color.GRAY);
             godsLabels2[i].setBounds(1200 + 100 * i, 525, 100, 170);
+            godsLabels2[i].setVisible(false);
             mainGamePanel.add(godsLabels2[i]);
         }//godsLabels
 
-        for (int i = 0; i < 6; i++) {
+        for (
+                int i = 0;
+                i < 6; i++) {
             for (int j = 4; j >= 0; j--) {
                 int k = i * 5 + j;
                 ImageIcon magicImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/magic.png"));
@@ -239,7 +260,9 @@ public class MainFrame extends JFrame {
                 mainGamePanel.add(magicLabels1[k]);
             }
         }
-        for (int i = 0; i < 6; i++) {
+        for (
+                int i = 0;
+                i < 6; i++) {
             for (int j = 4; j >= 0; j--) {
                 int k = i * 5 + j;
                 ImageIcon magicImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/magic.png"));
@@ -252,7 +275,14 @@ public class MainFrame extends JFrame {
             }
         }//magicLabels
 
-        startBtn.setBounds(1480, 420, 90, 50);
+        startBtn.setBounds(80, 50, 230, 70);
+        startBtn.setFont(new
+
+                Font("黑体", Font.PLAIN, 40));
+        startBtn.setContentAreaFilled(false);//透明
+//        startBtn.setBorderPainted(false);//去边框
+        startBtn.setFocusPainted(false);//去焦点
+        startBtn.setForeground(Color.GRAY);
         mainGamePanel.add(startBtn);
         coinBtn1.setBounds(1480, 480, 90, 50);
         mainGamePanel.add(coinBtn1);
@@ -292,13 +322,21 @@ public class MainFrame extends JFrame {
         mainGamePanel.add(p2GodsBtn2);
 
         playerStateLabel1.setBounds(30, 170, 100, 100);
-        playerStateLabel1.setFont(new Font("黑体", Font.PLAIN, 20));
+        playerStateLabel1.setFont(new
+
+                Font("黑体", Font.PLAIN, 20));
+        playerStateLabel1.setVisible(false);
         mainGamePanel.add(playerStateLabel1);
         playerStateLabel2.setBounds(30, 480, 100, 100);
-        playerStateLabel2.setFont(new Font("黑体", Font.PLAIN, 20));
+        playerStateLabel2.setFont(new
+
+                Font("黑体", Font.PLAIN, 20));
+        playerStateLabel2.setVisible(false);
         mainGamePanel.add(playerStateLabel2);
 
-        for (int i = 0; i < 3; i++) {
+        for (
+                int i = 0;
+                i < 3; i++) {
             levelBtns[i] = new JButton("level" + (i + 1));
             levelBtns[i].setBounds(1580, 550 + 50 * i, 80, 40);
             mainGamePanel.add(levelBtns[i]);
@@ -316,7 +354,9 @@ public class MainFrame extends JFrame {
         p2GodsBtn1.addActionListener(myListener);
         p2GodsBtn2.addActionListener(myListener);
 
-        for (int i = 0; i < 6; i++) {
+        for (
+                int i = 0;
+                i < 6; i++) {
             diceButtons1[i] = new DiceButton("10" + i);
 //            diceButtons1[i].setBounds(353 + 100 * i, 138, 70, 40);
             diceButtons1[i].setBounds(351 + 100 * i, 50, 75, 75);
@@ -328,7 +368,9 @@ public class MainFrame extends JFrame {
             mainGamePanel.add(diceButtons1[i]);
             diceButtons1[i].addActionListener(myListener);
         }
-        for (int i = 0; i < 6; i++) {
+        for (
+                int i = 0;
+                i < 6; i++) {
             diceButtons2[i] = new DiceButton("20" + i);
             diceButtons2[i].setBounds(351 + 100 * i, 600, 75, 75);
 
@@ -344,10 +386,19 @@ public class MainFrame extends JFrame {
         textArea.setLineWrap(true);//设置自动换行
         mainGamePanel.add(textArea);
 
-        this.add(mainGamePanel);
-        this.setBounds(100, 100, 1700, 800);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        this.
+
+                add(mainGamePanel);
+        this.
+
+                setBounds(100, 100, 1700, 800);
+        this.
+
+                setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.
+
+                setVisible(true);
+
     }
 
     public MainFrame() {

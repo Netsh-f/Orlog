@@ -11,6 +11,15 @@ public class ButtonAction {
 
     public static void startBtnAction() {
         ButtonAction.startFlag = 1;
+        for (int i = 0; i < MainFrame.mainFrame.hpLabels1.length; i++) {
+            MainFrame.mainFrame.hpLabels1[i].setVisible(true);
+            MainFrame.mainFrame.hpLabels2[i].setVisible(true);
+        }
+        for (int i = 0; i < MainFrame.mainFrame.godsLabels1.length; i++) {
+            MainFrame.mainFrame.godsLabels1[i].setVisible(true);
+            MainFrame.mainFrame.godsLabels2[i].setVisible(true);
+        }
+        MainFrame.mainFrame.startBtn.setVisible(false);
     }
 
     public static void coinBtn1Action() {

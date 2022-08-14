@@ -298,22 +298,22 @@ public class Player {
         }
 
         switch (p1.godsGraceNum) {
-            case 1 -> {
+            case 1:
                 Gods.thor(p1, p2, p1.godsGraceLevel);
-            }
-            case 2 -> {
+                break;
+            case 2:
                 Gods.heimdallr(p1, p2, p1.godsGraceLevel);
-            }
+                break;
         }
         p1.godsGraceNum = 0;
         isLose(p1, p2);
         switch (p2.godsGraceNum) {
-            case 1 -> {
+            case 1:
                 Gods.thor(p2, p1, p2.godsGraceLevel);
-            }
-            case 2 -> {
+                break;
+            case 2:
                 Gods.heimdallr(p2, p1, p2.godsGraceLevel);
-            }
+                break;
         }
         p2.godsGraceNum = 0;
 
@@ -348,7 +348,7 @@ public class Player {
             player.godsGraceNum = ButtonAction.godsGraceNum;
             ButtonAction.godsGraceNum = 0;
             switch (player.godsGraceNum) {
-                case 1 -> {
+                case 1:
                     MainFrame.mainFrame.textArea.setText("请选择消耗的魔力值(索尔怒袭)\n"
                             + "level1-消耗4点魔力造成2点伤害-\n"
                             + "level2-消耗8点魔力造成5点伤害-\n"
@@ -360,8 +360,8 @@ public class Player {
                     }
                     player.godsGraceLevel = ButtonAction.godsLevelNum;
                     ButtonAction.godsLevelNum = 0;
-                }
-                case 2 -> {
+                    break;
+                case 2:
                     MainFrame.mainFrame.textArea.setText("请选择消耗的魔力值(海姆达尔之眼)\n"
                             + "level1-消耗4点魔力每格挡一次攻击+1点生命值-\n"
                             + "level2-消耗7点魔力每格挡一次攻击+2点生命值-\n"
@@ -373,7 +373,7 @@ public class Player {
                     }
                     player.godsGraceLevel = ButtonAction.godsLevelNum;
                     ButtonAction.godsLevelNum = 0;
-                }
+                    break;
             }
         }
     }

@@ -1,12 +1,13 @@
 package com.zwj;
 
+import java.applet.AudioClip;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class test {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
-//        System.out.println(test.class.getClassLoader().getResource("image/test1.png"));
 
         MainFrame.mainFrame.init();
         Thread uiThread = new Thread(new UpdateUI());
@@ -15,7 +16,7 @@ public class test {
 
         while (true) {
             switch (ButtonAction.startFlag) {
-                case 1 -> {
+                case 1:
                     MainFrame.mainFrame.textArea.setText("player1决定正面还是背面？\n通过掷硬币来决定先手");
 
                     while (true) {
@@ -36,9 +37,7 @@ public class test {
                         }
                     }
                     ButtonAction.startFlag = 0;
-                }
-                default -> {
-                }
+                    break;
             }
         }
     }
@@ -50,10 +49,10 @@ public class test {
         UpdateUI.gameState = UpdateUI.SETTLE;
         Player.settle(p1, p2);
         Player.isLose(p1, p2);
-        MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText()+"\n点击确认以进行下一回合");
+        MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "\n点击确认以进行下一回合");
         UpdateUI.gameState = UpdateUI.NORMAL;
-        while (true){
-            if(ButtonAction.okFlag == 1){
+        while (true) {
+            if (ButtonAction.okFlag == 1) {
                 break;
             }
         }
