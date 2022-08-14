@@ -44,11 +44,14 @@ public class test {
     }
 
     public static void playAll(Player p1, Player p2) {
+        UpdateUI.gameState = UpdateUI.SELECT;
         Player.bothSelect(p1, p2);
         Player.godsGrace(p1, p2);
+        UpdateUI.gameState = UpdateUI.SETTLE;
         Player.settle(p1, p2);
         Player.isLose(p1, p2);
         MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText()+"\n点击确认以进行下一回合");
+        UpdateUI.gameState = UpdateUI.NORMAL;
         while (true){
             if(ButtonAction.okFlag == 1){
                 break;

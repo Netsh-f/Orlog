@@ -10,6 +10,6 @@ public class getRandom {
 
     public static int getRandomSide() {
         Random r = new Random();
-        return r.nextInt(12) + 1;
+        return 1 + r.nextInt(12);
     }
 }

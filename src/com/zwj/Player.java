@@ -9,13 +9,24 @@ public class Player {
     public int magic = 0;
     public Dice[] dice = new Dice[6];
     //对局单阶段过程变量
-    public int[] diceSelected = new int[6];//设置-1为未选择，其他数字为选择，且储存选择哪一个面的信息
-    public int[] randomSide = new int[6];//储存每一次掷骰得到的随机面
-    public int[] selected = new int[6];//储存一大个回合已经被选出来的骰子
+
     public int godsGraceFlag = -1;//-1为不使用众神恩惠
     public int godsGraceNum = 0;//选择哪一个众神恩惠，0为索尔怒袭，1为海姆达尔之眼
     public int godsGraceLevel = 0;//众神恩惠等级
     public int blockCnt = 0;
+
+    //    public int[] selectedNum = new int[6];
+//    public int selectedCnt = 0;
+//    public int[] diceSelected = new int[6];//设置-1为未选择，其他数字为选择，且储存选择哪一个面的信息
+//    public int[] randomSide = new int[6];//储存每一次掷骰得到的随机面
+//    public int[] selected = new int[6];//储存一大个回合已经被选出来的骰子
+    public int[] unSelectedDice = new int[6];
+    public int[] selectedDice = new int[6];
+    public int selectedDiceCnt = 0;
+    public int roundSelectedDiceCnt = 0;
+    public int[] roundSelected = new int[6];
+
+    public int roundCnt = 0;
 
     public static Player player1 = new Player("player1");
     public static Player player2 = new Player("player2");
@@ -30,24 +41,29 @@ public class Player {
         this.name = name;
     }
 
-    public static void initDiceSelected(int[] arr) {
-        //设置-1为未选择，其他数字为选择，且储存选择哪一个面的信息
-        Arrays.fill(arr, 0);
+    public static void initDiceSelected(Player player) {
+        //设置0为未选择，其他数字为选择，且储存选择哪一个面的信息
+//        Arrays.fill(player.diceSelected, 0);
+//        Arrays.fill(player.selected, 0);
+//        Arrays.fill(player.selectedNum, 0);
+//        player.selectedCnt = 0;
+        Arrays.fill(player.unSelectedDice, 0);
+        Arrays.fill(player.selectedDice, 0);
+        player.selectedDiceCnt = 0;
+        player.roundSelectedDiceCnt = 0;
     }
 
     public static void playerSelect(Player player) {
-        Scanner myScanner = new Scanner(System.in);
-//        System.out.println("====掷骰阶段====");
-//        System.out.println("现在由" + player.name + "进行选择");
+        Arrays.fill(player.roundSelected, 0);
         MainFrame.mainFrame.textArea.setText("====掷骰阶段====" + "\n" + "现在由" + player.name + "进行选择\n");
-        for (int i = 0; i < 6; i++) {
-            if (player.diceSelected[i] == 0) {//如果这个骰子还没有被选择
-                player.randomSide[i] = getRandom.getRandomSide();
-//                System.out.println("骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]]);
-                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]] + "\n");
+        for (int i = 0; i < 6 - player.selectedDiceCnt; i++) {
+            player.unSelectedDice[i] = getRandom.getRandomSide();
+            if (player == Player.player1) {
+                MainFrame.mainFrame.diceLabels1[i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.diceLabels2[i].setVisible(true);
             }
         }
-//        System.out.println("选择骰子保留点数，之后确定(格式如0 1 0 1 1 0)");//现在选择的格式是固定的，都必须输入六个数字，待后期改进
         MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择骰子保留点数，之后确定");
 
         while (true) {
@@ -57,36 +73,56 @@ public class Player {
         }
         ButtonAction.okFlag = 0;
 
-        MainFrame.mainFrame.textArea.setText("");
-        for (int i = 0; i < 6; i++) {
-            if (player.selected[i] == 0 && player.diceSelected[i] != 0) {//输出刚刚选择的骰子(上一次没有被选出)
-//                System.out.println("选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.diceSelected[i]] + "面");
-                player.selected[i] = 1;
-                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.diceSelected[i]] + "面\n");
+        if (player.roundCnt == 2) {
+            for (int i = 0; i < 6 - player.selectedDiceCnt; i++) {
+                player.selectedDice[player.selectedDiceCnt + player.roundSelectedDiceCnt] = player.unSelectedDice[i];
+                player.unSelectedDice[i] = 0;
+                player.roundSelectedDiceCnt++;
+                player.roundSelected[i] = 1;
             }
         }
 
-        MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "点击确定以继续");
-        while (true) {
-            if (ButtonAction.okFlag == 1) {
-                break;
+        if (player == Player.player1) {
+            for (int i = 0; i < 6; i++) {
+                MainFrame.mainFrame.diceLabels1[i].setVisible(false);
+            }
+        } else {
+            for (int i = 0; i < 6; i++) {
+                MainFrame.mainFrame.diceLabels2[i].setVisible(false);
             }
         }
-        ButtonAction.okFlag = 0;
+
+        player.selectedDiceCnt += player.roundSelectedDiceCnt;
+        player.roundSelectedDiceCnt = 0;
+
+//        MainFrame.mainFrame.textArea.setText("");
+//        for (int i = 0; i < 6; i++) {
+//            if (player.selected[i] == 0 && player.diceSelected[i] != 0) {//输出刚刚选择的骰子(上一次没有被选出)
+////                System.out.println("选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.diceSelected[i]] + "面");
+//                player.selected[i] = 1;
+//                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.diceSelected[i]] + "面\n");
+//            }
+//        }
+//
+//        MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "点击确定以继续");
+//        while (true) {
+//            if (ButtonAction.okFlag == 1) {
+//                break;
+//            }
+//        }
+//        ButtonAction.okFlag = 0;
 //        System.out.println("暂停");
 //        int num = myScanner.nextInt();
     }
 
     public static void playerLastSelect(Player player) {
-        Scanner myScanner = new Scanner(System.in);//记得删掉
-//        System.out.println("====掷骰阶段====");
-//        System.out.println("现在由" + player.name + "进行选择");
         MainFrame.mainFrame.textArea.setText("====掷骰阶段====\n" + "现在由" + player.name + "进行选择\n");
-        for (int i = 0; i < 6; i++) {
-            if (player.selected[i] == 0) {//如果这个骰子还没有被选择
-                player.randomSide[i] = getRandom.getRandomSide();
-//                System.out.println("骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]]);
-                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]] + "\n");
+        for (int i = 0; i < 6 - player.selectedDiceCnt; i++) {
+            player.unSelectedDice[i] = getRandom.getRandomSide();
+            if (player == Player.player1) {
+                MainFrame.mainFrame.diceLabels1[i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.diceLabels2[i].setVisible(true);
             }
         }
 //        System.out.println("最后一轮选择，现在必须全选，没得选择，输入1以继续");//现在选择的格式是固定的，都必须输入六个数字，待后期改进
@@ -102,79 +138,90 @@ public class Player {
             }
         }
         ButtonAction.okFlag = 0;
-        MainFrame.mainFrame.textArea.setText("");
-        for (int i = 0; i < 6; i++) {
-            if (player.selected[i] == 0) {//如果之前没有被选择
-                player.selected[i] = 1;
-                player.diceSelected[i] = player.randomSide[i];
-//                System.out.println("选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.randomSide[i]] + "面");
-                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.randomSide[i]] + "面\n");
-            }
-        }
-        MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "点击确定以继续");
-        while (true) {
-            if (ButtonAction.okFlag == 1) {
-                break;
-            }
-        }
-        ButtonAction.okFlag = 0;
+//        MainFrame.mainFrame.textArea.setText("");
+//        for (int i = 0; i < 6; i++) {
+//            if (player.selected[i] == 0) {//如果之前没有被选择
+//                player.selected[i] = 1;
+//                player.diceSelected[i] = player.randomSide[i];
+//                player.selectedNum[player.selectedCnt] = player.diceSelected[i];
+//                player.selectedCnt++;
+////                System.out.println("选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.randomSide[i]] + "面");
+//                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.randomSide[i]] + "面\n");
+//            }
+//        }
+//        MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "点击确定以继续");
+//        while (true) {
+//            if (ButtonAction.okFlag == 1) {
+//                break;
+//            }
+//        }
+//        ButtonAction.okFlag = 0;
     }
 
     public static void bothSelect(Player p1, Player p2) {
-        Player.initDiceSelected(p1.diceSelected);
-        Player.initDiceSelected(p2.diceSelected);
-        Player.initDiceSelected(p1.selected);
-        Player.initDiceSelected(p2.selected);//初始化为-1
+        p1.roundCnt = 0;
+        p2.roundCnt = 0;
+        Player.initDiceSelected(p1);
+        Player.initDiceSelected(p2);
         Player.playerSelect(p1);
+        p1.roundCnt++;
         Player.playerSelect(p2);
+        p2.roundCnt++;
         Player.playerSelect(p1);
+        p1.roundCnt++;
         Player.playerSelect(p2);
-        Player.playerLastSelect(p1);
-        Player.playerLastSelect(p2);
+        p2.roundCnt++;
+//        Player.playerLastSelect(p1);
+//        Player.playerLastSelect(p2);
+        Player.playerSelect(p1);
+        p1.roundCnt++;
+        Player.playerSelect(p2);
+        p2.roundCnt++;
     }
 
     public static void settle(Player p1, Player p2) {
+        UpdateUI.gameState = UpdateUI.SETTLE;
         MainFrame.mainFrame.textArea.setText("====结算阶段====\n");
         int magic1 = 0, axe1 = 0, helmat1 = 0, arrow1 = 0, shield1 = 0, steal1 = 0;
         int magic2 = 0, axe2 = 0, helmat2 = 0, arrow2 = 0, shield2 = 0, steal2 = 0;
         p1.blockCnt = 0;
         p2.blockCnt = 0;
         for (int i = 0; i < 6; i++) {//结算魔力magic值
-            if (DiceSide.isMagic(p1.diceSelected[i])) {
+            if (DiceSide.isMagic(p1.selectedDice[i])) {
                 magic1++;
             }
-            if (p1.diceSelected[i] == DiceSide.axe || p1.diceSelected[i] == DiceSide.axe1 || p1.diceSelected[i] == DiceSide.axe2 || p1.diceSelected[i] == DiceSide.axe3) {
+            if (p1.selectedDice[i] == DiceSide.axe || p1.selectedDice[i] == DiceSide.axe1 || p1.selectedDice[i] == DiceSide.axe2 || p1.selectedDice[i] == DiceSide.axe3) {
                 axe1++;
             }
-            if (p1.diceSelected[i] == DiceSide.helmet || p1.diceSelected[i] == DiceSide.helmetMagic) {
+            if (p1.selectedDice[i] == DiceSide.helmet || p1.selectedDice[i] == DiceSide.helmetMagic) {
                 helmat1++;
             }
-            if (p1.diceSelected[i] == DiceSide.arrow || p1.diceSelected[i] == DiceSide.arrowMagic) {
+            if (p1.selectedDice[i] == DiceSide.arrow || p1.selectedDice[i] == DiceSide.arrowMagic) {
                 arrow1++;
             }
-            if (p1.diceSelected[i] == DiceSide.shield || p1.diceSelected[i] == DiceSide.shieldMagic) {
+            if (p1.selectedDice[i] == DiceSide.shield || p1.selectedDice[i] == DiceSide.shieldMagic) {
                 shield1++;
             }
-            if (p1.diceSelected[i] == DiceSide.steal || p1.diceSelected[i] == DiceSide.stealMagic) {
+            if (p1.selectedDice[i] == DiceSide.steal || p1.selectedDice[i] == DiceSide.stealMagic) {
                 steal1++;
             }
 
-            if (DiceSide.isMagic(p2.diceSelected[i])) {
+            if (DiceSide.isMagic(p2.selectedDice[i])) {
                 magic2++;
             }
-            if (p2.diceSelected[i] == DiceSide.axe || p2.diceSelected[i] == DiceSide.axe1 || p2.diceSelected[i] == DiceSide.axe2 || p2.diceSelected[i] == DiceSide.axe3) {
+            if (p2.selectedDice[i] == DiceSide.axe || p2.selectedDice[i] == DiceSide.axe1 || p2.selectedDice[i] == DiceSide.axe2 || p2.selectedDice[i] == DiceSide.axe3) {
                 axe2++;
             }
-            if (p2.diceSelected[i] == DiceSide.helmet || p2.diceSelected[i] == DiceSide.helmetMagic) {
+            if (p2.selectedDice[i] == DiceSide.helmet || p2.selectedDice[i] == DiceSide.helmetMagic) {
                 helmat2++;
             }
-            if (p2.diceSelected[i] == DiceSide.arrow || p2.diceSelected[i] == DiceSide.arrowMagic) {
+            if (p2.selectedDice[i] == DiceSide.arrow || p2.selectedDice[i] == DiceSide.arrowMagic) {
                 arrow2++;
             }
-            if (p2.diceSelected[i] == DiceSide.shield || p2.diceSelected[i] == DiceSide.shieldMagic) {
+            if (p2.selectedDice[i] == DiceSide.shield || p2.selectedDice[i] == DiceSide.shieldMagic) {
                 shield2++;
             }
-            if (p2.diceSelected[i] == DiceSide.steal || p2.diceSelected[i] == DiceSide.stealMagic) {
+            if (p2.selectedDice[i] == DiceSide.steal || p2.selectedDice[i] == DiceSide.stealMagic) {
                 steal2++;
             }
         }
@@ -269,6 +316,10 @@ public class Player {
             }
         }
         p2.godsGraceNum = 0;
+
+        Player.initDiceSelected(p1);
+        Player.initDiceSelected(p2);
+
         isLose(p2, p1);
     }
 

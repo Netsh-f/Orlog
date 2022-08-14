@@ -17,8 +17,10 @@ public class MainFrame extends JFrame {
     public HPJLabel[] hpLabels2 = new HPJLabel[15];
     public GodsJLabel[] godsLabels1 = new GodsJLabel[2];
     public GodsJLabel[] godsLabels2 = new GodsJLabel[2];
-    public magicJLabel[] magicLabels1 = new magicJLabel[25];
-    public magicJLabel[] magicLabels2 = new magicJLabel[25];
+    public magicJLabel[] magicLabels1 = new magicJLabel[30];
+    public magicJLabel[] magicLabels2 = new magicJLabel[30];
+    public DiceJLabel[] settleLabels1 = new DiceJLabel[12];
+    public DiceJLabel[] settleLabels2 = new DiceJLabel[12];
 
     public DiceButton[] diceButtons1 = new DiceButton[6];
     public DiceButton[] diceButtons2 = new DiceButton[6];
@@ -141,6 +143,7 @@ public class MainFrame extends JFrame {
             diceLabels1[i].setFont(new Font("黑体", Font.PLAIN, 20));
             diceLabels1[i].setBackground(Color.CYAN);
             diceLabels1[i].setBounds(350 + 100 * i, 50, 120, 75);//玩家1的骰子
+            diceLabels1[i].setVisible(false);
             mainGamePanel.add(diceLabels1[i]);
         }
         for (int i = 0; i < 6; i++) {
@@ -149,8 +152,30 @@ public class MainFrame extends JFrame {
             diceLabels2[i].setFont(new Font("黑体", Font.PLAIN, 20));
             diceLabels2[i].setBackground(Color.CYAN);
             diceLabels2[i].setBounds(350 + 100 * i, 600, 120, 75);//玩家2的骰子
+            diceLabels2[i].setVisible(false);
             mainGamePanel.add(diceLabels2[i]);
-        }//骰子dice
+        }//骰子diceLabels
+
+        for (int i = 0; i < 12; i++) {
+            ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/none.png"));
+            diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+            settleLabels1[i] = new DiceJLabel(diceImageIcon);
+
+            settleLabels1[i].setOpaque(false);
+            settleLabels1[i].setVisible(false);
+            settleLabels1[i].setBounds(150 + 80 * i, 270, 120, 75);
+            mainGamePanel.add(settleLabels1[i]);
+        }
+        for (int i = 0; i < 12; i++) {
+            ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/none.png"));
+            diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+            settleLabels2[i] = new DiceJLabel(diceImageIcon);
+
+            settleLabels2[i].setOpaque(false);
+            settleLabels2[i].setVisible(false);
+            settleLabels2[i].setBounds(150 + 80 * i, 400, 120, 75);
+            mainGamePanel.add(settleLabels2[i]);
+        }//settleLabels
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 5; j++) {
@@ -187,7 +212,7 @@ public class MainFrame extends JFrame {
             godsLabels1[i].setOpaque(false);
             godsLabels1[i].setFont(new Font("黑体", Font.PLAIN, 30));
             godsLabels1[i].setBackground(Color.GRAY);
-            godsLabels1[i].setBounds(960 + 100 * i, 20, 100, 170);
+            godsLabels1[i].setBounds(1200 + 100 * i, 20, 100, 170);
 //            godsLabels1[i].setLocation(970 + 100 * i, 20);
             mainGamePanel.add(godsLabels1[i]);
         }
@@ -198,52 +223,72 @@ public class MainFrame extends JFrame {
             godsLabels2[i].setOpaque(false);
             godsLabels2[i].setFont(new Font("黑体", Font.PLAIN, 30));
             godsLabels2[i].setBackground(Color.GRAY);
-            godsLabels2[i].setBounds(960 + 100 * i, 525, 100, 170);
+            godsLabels2[i].setBounds(1200 + 100 * i, 525, 100, 170);
             mainGamePanel.add(godsLabels2[i]);
-        }//gods
+        }//godsLabels
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 4; j >= 0; j--) {
+                int k = i * 5 + j;
                 ImageIcon magicImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/magic.png"));
                 magicImageIcon.setImage(magicImageIcon.getImage().getScaledInstance(70, 60, Image.SCALE_DEFAULT));
-                magicLabels1[i] = new magicJLabel(magicImageIcon);
-                magicLabels1[i].setVisible(true);
-                magicLabels1[i].setOpaque(false);
-                magicLabels1[i].setBounds(880 + 4 * j + 67 * i, 270 - 6 * j, 100, 100);
-                mainGamePanel.add(magicLabels1[i]);
+                magicLabels1[k] = new magicJLabel(magicImageIcon);
+                magicLabels1[k].setVisible(false);
+                magicLabels1[k].setOpaque(false);
+                magicLabels1[k].setBounds(930 + 4 * j + 67 * i - 198 * (i / 3), 30 - 6 * j + 100 * (i / 3), 100, 100);
+                mainGamePanel.add(magicLabels1[k]);
             }
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 4; j >= 0; j--) {
+                int k = i * 5 + j;
                 ImageIcon magicImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/magic.png"));
                 magicImageIcon.setImage(magicImageIcon.getImage().getScaledInstance(70, 60, Image.SCALE_DEFAULT));
-                magicLabels2[i] = new magicJLabel(magicImageIcon);
-                magicLabels2[i].setVisible(true);
-                magicLabels2[i].setOpaque(false);
-                magicLabels2[i].setBounds(880 + 4 * j + 67 * i, 430 - 6 * j, 100, 100);
-                mainGamePanel.add(magicLabels2[i]);
+                magicLabels2[k] = new magicJLabel(magicImageIcon);
+                magicLabels2[k].setVisible(false);
+                magicLabels2[k].setOpaque(false);
+                magicLabels2[k].setBounds(930 + (4 * j) + (67 * i) - (198 * (i / 3)), 570 - (6 * j) + (100 * (i / 3)), 100, 100);
+                mainGamePanel.add(magicLabels2[k]);
             }
-        }
+        }//magicLabels
 
-        startBtn.setBounds(1270, 420, 90, 50);
+        startBtn.setBounds(1480, 420, 90, 50);
         mainGamePanel.add(startBtn);
-        coinBtn1.setBounds(1270, 480, 90, 50);
+        coinBtn1.setBounds(1480, 480, 90, 50);
         mainGamePanel.add(coinBtn1);
-        coinBtn2.setBounds(1270, 540, 90, 50);
+        coinBtn2.setBounds(1480, 540, 90, 50);
         mainGamePanel.add(coinBtn2);
-        okButton.setBounds(1270, 600, 90, 50);
+        okButton.setBounds(1480, 600, 90, 50);
         mainGamePanel.add(okButton);
-        godsGraceBtn1.setBounds(1370, 420, 90, 50);
+
+
+        godsGraceBtn1.setBounds(1580, 420, 90, 50);
         mainGamePanel.add(godsGraceBtn1);
-        godsGraceBtn2.setBounds(1370, 480, 90, 50);
+        godsGraceBtn2.setBounds(1580, 480, 90, 50);
         mainGamePanel.add(godsGraceBtn2);
-        p1GodsBtn1.setBounds(970 + 0, 200, 80, 40);
+
+        p1GodsBtn1.setBounds(1210, 25, 80, 160);
+        p1GodsBtn1.setContentAreaFilled(false);
+        p1GodsBtn1.setBorderPainted(false);
+        p1GodsBtn1.setFocusPainted(false);
         mainGamePanel.add(p1GodsBtn1);
-        p1GodsBtn2.setBounds(970 + 100, 200, 80, 40);
+
+        p1GodsBtn2.setBounds(1210 + 100, 25, 80, 160);
+        p1GodsBtn2.setContentAreaFilled(false);
+        p1GodsBtn2.setBorderPainted(false);
+        p1GodsBtn2.setFocusPainted(false);
         mainGamePanel.add(p1GodsBtn2);
-        p2GodsBtn1.setBounds(970 + 0, 705, 80, 40);
+
+        p2GodsBtn1.setBounds(1210, 530, 80, 160);
+        p2GodsBtn1.setContentAreaFilled(false);
+        p2GodsBtn1.setBorderPainted(false);
+        p2GodsBtn1.setFocusPainted(false);
         mainGamePanel.add(p2GodsBtn1);
-        p2GodsBtn2.setBounds(970 + 100, 705, 80, 40);
+
+        p2GodsBtn2.setBounds(1210 + 100, 530, 80, 160);
+        p2GodsBtn2.setContentAreaFilled(false);
+        p2GodsBtn2.setBorderPainted(false);
+        p2GodsBtn2.setFocusPainted(false);
         mainGamePanel.add(p2GodsBtn2);
 
         playerStateLabel1.setBounds(30, 170, 100, 100);
@@ -255,7 +300,7 @@ public class MainFrame extends JFrame {
 
         for (int i = 0; i < 3; i++) {
             levelBtns[i] = new JButton("level" + (i + 1));
-            levelBtns[i].setBounds(1170, 20 + 50 * i, 80, 40);
+            levelBtns[i].setBounds(1580, 550 + 50 * i, 80, 40);
             mainGamePanel.add(levelBtns[i]);
             levelBtns[i].addActionListener(myListener);
         }//levelBtn
@@ -273,23 +318,34 @@ public class MainFrame extends JFrame {
 
         for (int i = 0; i < 6; i++) {
             diceButtons1[i] = new DiceButton("10" + i);
-            diceButtons1[i].setBounds(353 + 100 * i, 138, 70, 40);
+//            diceButtons1[i].setBounds(353 + 100 * i, 138, 70, 40);
+            diceButtons1[i].setBounds(351 + 100 * i, 50, 75, 75);
+
+            diceButtons1[i].setContentAreaFilled(false);//透明
+            diceButtons1[i].setBorderPainted(false);//去边框
+            diceButtons1[i].setFocusPainted(false);//去焦点
+
             mainGamePanel.add(diceButtons1[i]);
             diceButtons1[i].addActionListener(myListener);
         }
         for (int i = 0; i < 6; i++) {
             diceButtons2[i] = new DiceButton("20" + i);
-            diceButtons2[i].setBounds(353 + 100 * i, 686, 70, 40);
+            diceButtons2[i].setBounds(351 + 100 * i, 600, 75, 75);
+
+            diceButtons2[i].setContentAreaFilled(false);
+            diceButtons2[i].setBorderPainted(false);
+            diceButtons2[i].setFocusPainted(false);
+
             mainGamePanel.add(diceButtons2[i]);
             diceButtons2[i].addActionListener(myListener);
         }//diceButton
 
-        textArea.setBounds(1270, 0, 200, 400);
+        textArea.setBounds(1520, 0, 150, 400);
         textArea.setLineWrap(true);//设置自动换行
         mainGamePanel.add(textArea);
 
         this.add(mainGamePanel);
-        this.setBounds(100, 100, 1500, 800);
+        this.setBounds(100, 100, 1700, 800);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
     }

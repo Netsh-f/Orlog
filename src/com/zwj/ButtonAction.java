@@ -22,11 +22,19 @@ public class ButtonAction {
     }
 
     public static void diceSelectdAction(Player player, int num) {
-        if (player.selected[num] == 0) {
-            if (player.diceSelected[num] == 0) {
-                player.diceSelected[num] = player.randomSide[num];
-            } else {
-                player.diceSelected[num] = 0;
+//        if (player.selected[num] == 0 && player.diceSelected[num] == 0) {
+//            player.diceSelected[num] = player.randomSide[num];
+//            player.selectedNum[player.selectedCnt] = player.diceSelected[num];
+//            player.selectedCnt++;
+//        }
+        if (num < 6 - player.selectedDiceCnt) {
+            if (player.roundCnt >= 2) {
+                MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "\n最后一轮，请直接点击确定选择全部骰子以继续");
+            }else {
+                player.selectedDice[player.selectedDiceCnt + player.roundSelectedDiceCnt] = player.unSelectedDice[num];
+                player.unSelectedDice[num] = 0;
+                player.roundSelectedDiceCnt++;
+                player.roundSelected[num] = 1;
             }
         }
     }
