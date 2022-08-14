@@ -22,11 +22,11 @@ public class ButtonAction {
     }
 
     public static void diceSelectdAction(Player player, int num) {
-        if (player.selected[num] == -1) {
-            if (player.diceSelected[num] == -1) {
+        if (player.selected[num] == 0) {
+            if (player.diceSelected[num] == 0) {
                 player.diceSelected[num] = player.randomSide[num];
             } else {
-                player.diceSelected[num] = -1;
+                player.diceSelected[num] = 0;
             }
         }
     }

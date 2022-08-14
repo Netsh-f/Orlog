@@ -47,8 +47,6 @@ public class test {
         Player.bothSelect(p1, p2);
         Player.godsGrace(p1, p2);
         Player.settle(p1, p2);
-        Player.printPlayerState(p1);
-        Player.printPlayerState(p2);
         Player.isLose(p1, p2);
         MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText()+"\n点击确认以进行下一回合");
         while (true){

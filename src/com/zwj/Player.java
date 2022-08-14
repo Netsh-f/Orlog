@@ -32,7 +32,7 @@ public class Player {
 
     public static void initDiceSelected(int[] arr) {
         //设置-1为未选择，其他数字为选择，且储存选择哪一个面的信息
-        Arrays.fill(arr, -1);
+        Arrays.fill(arr, 0);
     }
 
     public static void playerSelect(Player player) {
@@ -41,7 +41,7 @@ public class Player {
 //        System.out.println("现在由" + player.name + "进行选择");
         MainFrame.mainFrame.textArea.setText("====掷骰阶段====" + "\n" + "现在由" + player.name + "进行选择\n");
         for (int i = 0; i < 6; i++) {
-            if (player.diceSelected[i] == -1) {//如果这个骰子还没有被选择
+            if (player.diceSelected[i] == 0) {//如果这个骰子还没有被选择
                 player.randomSide[i] = getRandom.getRandomSide();
 //                System.out.println("骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]]);
                 MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]] + "\n");
@@ -59,7 +59,7 @@ public class Player {
 
         MainFrame.mainFrame.textArea.setText("");
         for (int i = 0; i < 6; i++) {
-            if (player.selected[i] == -1 && player.diceSelected[i] != -1) {//输出刚刚选择的骰子(上一次没有被选出)
+            if (player.selected[i] == 0 && player.diceSelected[i] != 0) {//输出刚刚选择的骰子(上一次没有被选出)
 //                System.out.println("选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.diceSelected[i]] + "面");
                 player.selected[i] = 1;
                 MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.diceSelected[i]] + "面\n");
@@ -83,7 +83,7 @@ public class Player {
 //        System.out.println("现在由" + player.name + "进行选择");
         MainFrame.mainFrame.textArea.setText("====掷骰阶段====\n" + "现在由" + player.name + "进行选择\n");
         for (int i = 0; i < 6; i++) {
-            if (player.selected[i] == -1) {//如果这个骰子还没有被选择
+            if (player.selected[i] == 0) {//如果这个骰子还没有被选择
                 player.randomSide[i] = getRandom.getRandomSide();
 //                System.out.println("骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]]);
                 MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "骰子" + i + "为" + DiceSide.sideName[player.randomSide[i]] + "\n");
@@ -104,7 +104,7 @@ public class Player {
         ButtonAction.okFlag = 0;
         MainFrame.mainFrame.textArea.setText("");
         for (int i = 0; i < 6; i++) {
-            if (player.selected[i] == -1) {//如果之前没有被选择
+            if (player.selected[i] == 0) {//如果之前没有被选择
                 player.selected[i] = 1;
                 player.diceSelected[i] = player.randomSide[i];
 //                System.out.println("选择的骰子为" + i + "号骰子，且为" + DiceSide.sideName[player.randomSide[i]] + "面");
@@ -272,11 +272,11 @@ public class Player {
         isLose(p2, p1);
     }
 
-    public static void printPlayerState(Player player) {
-        System.out.println("====" + player.name + "的状态====");
-        System.out.println(player.name + "的血量:" + player.hp);
-        System.out.println(player.name + "的魔力:" + player.magic);
-    }
+//    public static void rintPlayerState(Player player) {
+//        System.out.println("====" + player.name + "的状态====");
+//        System.out.println(player.name + "的血量:" + player.hp);
+//        System.out.println(player.name + "的魔力:" + player.magic);
+//    }
 
     public static void godsGracePlay(Player player) {
         MainFrame.mainFrame.textArea.setText("====众神恩惠阶段====\n" + "请" + player.name + "选择是否要使用众神恩惠(是/否)");

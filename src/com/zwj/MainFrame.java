@@ -17,6 +17,8 @@ public class MainFrame extends JFrame {
     public HPJLabel[] hpLabels2 = new HPJLabel[15];
     public GodsJLabel[] godsLabels1 = new GodsJLabel[2];
     public GodsJLabel[] godsLabels2 = new GodsJLabel[2];
+    public magicJLabel[] magicLabels1 = new magicJLabel[25];
+    public magicJLabel[] magicLabels2 = new magicJLabel[25];
 
     public DiceButton[] diceButtons1 = new DiceButton[6];
     public DiceButton[] diceButtons2 = new DiceButton[6];
@@ -135,18 +137,18 @@ public class MainFrame extends JFrame {
         mainGamePanel.setLayout(null);
         for (int i = 0; i < 6; i++) {
             diceLabels1[i] = new DiceJLabel("label" + i, JLabel.CENTER);
-            diceLabels1[i].setOpaque(true);
+            diceLabels1[i].setOpaque(false);
             diceLabels1[i].setFont(new Font("黑体", Font.PLAIN, 20));
             diceLabels1[i].setBackground(Color.CYAN);
-            diceLabels1[i].setBounds(350 + 100 * i, 50, 75, 75);//玩家1的骰子
+            diceLabels1[i].setBounds(350 + 100 * i, 50, 120, 75);//玩家1的骰子
             mainGamePanel.add(diceLabels1[i]);
         }
         for (int i = 0; i < 6; i++) {
             diceLabels2[i] = new DiceJLabel("Label" + i, JLabel.CENTER);
-            diceLabels2[i].setOpaque(true);
+            diceLabels2[i].setOpaque(false);
             diceLabels2[i].setFont(new Font("黑体", Font.PLAIN, 20));
             diceLabels2[i].setBackground(Color.CYAN);
-            diceLabels2[i].setBounds(350 + 100 * i, 600, 75, 75);//玩家2的骰子
+            diceLabels2[i].setBounds(350 + 100 * i, 600, 120, 75);//玩家2的骰子
             mainGamePanel.add(diceLabels2[i]);
         }//骰子dice
 
@@ -200,6 +202,29 @@ public class MainFrame extends JFrame {
             mainGamePanel.add(godsLabels2[i]);
         }//gods
 
+        for (int i = 0; i < 5; i++) {
+            for (int j = 4; j >= 0; j--) {
+                ImageIcon magicImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/magic.png"));
+                magicImageIcon.setImage(magicImageIcon.getImage().getScaledInstance(70, 60, Image.SCALE_DEFAULT));
+                magicLabels1[i] = new magicJLabel(magicImageIcon);
+                magicLabels1[i].setVisible(true);
+                magicLabels1[i].setOpaque(false);
+                magicLabels1[i].setBounds(880 + 4 * j + 67 * i, 270 - 6 * j, 100, 100);
+                mainGamePanel.add(magicLabels1[i]);
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (int j = 4; j >= 0; j--) {
+                ImageIcon magicImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/magic.png"));
+                magicImageIcon.setImage(magicImageIcon.getImage().getScaledInstance(70, 60, Image.SCALE_DEFAULT));
+                magicLabels2[i] = new magicJLabel(magicImageIcon);
+                magicLabels2[i].setVisible(true);
+                magicLabels2[i].setOpaque(false);
+                magicLabels2[i].setBounds(880 + 4 * j + 67 * i, 430 - 6 * j, 100, 100);
+                mainGamePanel.add(magicLabels2[i]);
+            }
+        }
+
         startBtn.setBounds(1270, 420, 90, 50);
         mainGamePanel.add(startBtn);
         coinBtn1.setBounds(1270, 480, 90, 50);
@@ -221,10 +246,10 @@ public class MainFrame extends JFrame {
         p2GodsBtn2.setBounds(970 + 100, 705, 80, 40);
         mainGamePanel.add(p2GodsBtn2);
 
-        playerStateLabel1.setBounds(30, 150, 100, 100);
+        playerStateLabel1.setBounds(30, 170, 100, 100);
         playerStateLabel1.setFont(new Font("黑体", Font.PLAIN, 20));
         mainGamePanel.add(playerStateLabel1);
-        playerStateLabel2.setBounds(30, 380, 100, 100);
+        playerStateLabel2.setBounds(30, 480, 100, 100);
         playerStateLabel2.setFont(new Font("黑体", Font.PLAIN, 20));
         mainGamePanel.add(playerStateLabel2);
 
