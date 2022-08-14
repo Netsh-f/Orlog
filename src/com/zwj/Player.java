@@ -143,7 +143,7 @@ public class Player {
             if (DiceSide.isMagic(p1.diceSelected[i])) {
                 magic1++;
             }
-            if (p1.diceSelected[i] == DiceSide.axe || p1.diceSelected[i] == DiceSide.axeMagic) {
+            if (p1.diceSelected[i] == DiceSide.axe || p1.diceSelected[i] == DiceSide.axe1 || p1.diceSelected[i] == DiceSide.axe2 || p1.diceSelected[i] == DiceSide.axe3) {
                 axe1++;
             }
             if (p1.diceSelected[i] == DiceSide.helmet || p1.diceSelected[i] == DiceSide.helmetMagic) {
@@ -162,7 +162,7 @@ public class Player {
             if (DiceSide.isMagic(p2.diceSelected[i])) {
                 magic2++;
             }
-            if (p2.diceSelected[i] == DiceSide.axe || p2.diceSelected[i] == DiceSide.axeMagic) {
+            if (p2.diceSelected[i] == DiceSide.axe || p2.diceSelected[i] == DiceSide.axe1 || p2.diceSelected[i] == DiceSide.axe2 || p2.diceSelected[i] == DiceSide.axe3) {
                 axe2++;
             }
             if (p2.diceSelected[i] == DiceSide.helmet || p2.diceSelected[i] == DiceSide.helmetMagic) {

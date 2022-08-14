@@ -1,9 +1,16 @@
 package com.zwj;
 
+import java.io.File;
+import java.io.IOException;
+
 public class test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+//        System.out.println(test.class.getClassLoader().getResource("image/test1.png"));
 
         MainFrame.mainFrame.init();
+        Thread uiThread = new Thread(new UpdateUI());
+        uiThread.start();
         MainFrame.mainFrame.textArea.setText("点击Play以开始对局");
 
         while (true) {
