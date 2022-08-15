@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class test {
-    public static void main(String[] args) throws IOException, URISyntaxException {
-
+    public static void main(String[] args) throws Exception {
 
         MainFrame.mainFrame.init();
+
+        MusicPlayer.startMusic1.start(false);
+        MusicPlayer.startMusic2.start(true);
+
         Thread uiThread = new Thread(new UpdateUI());
         uiThread.start();
         MainFrame.mainFrame.textArea.setText("点击Play以开始对局");
