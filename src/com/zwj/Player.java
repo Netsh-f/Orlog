@@ -1,5 +1,7 @@
 package com.zwj;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -20,16 +22,20 @@ public class Player {
 //    public int[] diceSelected = new int[6];//设置-1为未选择，其他数字为选择，且储存选择哪一个面的信息
 //    public int[] randomSide = new int[6];//储存每一次掷骰得到的随机面
 //    public int[] selected = new int[6];//储存一大个回合已经被选出来的骰子
-    public int[] unSelectedDice = new int[6];
-    public int[] selectedDice = new int[6];
-    public int selectedDiceCnt = 0;
-    public int roundSelectedDiceCnt = 0;
-    public int[] roundSelected = new int[6];
+    public int[] unSelectedDice = new int[6];//还没有被选出来的骰子，存抽到的点数
+    public int[] selectedDice = new int[6];//存已经选择出来的骰子的点数
+    public int selectedDiceCnt = 0;//存已经选择出来的骰子的数量
+    public int roundSelectedDiceCnt = 0;//存这一次选择出来的骰子的数量
+    public int[] roundSelected = new int[6];//用来存这一次这个位置的骰子有没有被选中
+    public int[] sideCnt = new int[9];//存每种面的总数 0斧 12弓 34头盔 56盾 78偷
 
     public int roundCnt = 0;
 
-    public static Player player1 = new Player("player1");
-    public static Player player2 = new Player("player2");
+    public static Player player1 = new Player("玩家1");
+    public static Player player2 = new Player("玩家2");
+    public static Player roundPlayer = null;
+    public static Player firstPlayer = null;
+    public static int coinNum = 0;
 
     public Player(String name) {
         dice[0] = Dice.dice0;
@@ -65,6 +71,7 @@ public class Player {
             }
         }
         MainFrame.mainFrame.textArea.setText(MainFrame.mainFrame.textArea.getText() + "选择骰子保留点数，之后确定");
+        MainFrame.mainFrame.okButton.setVisible(true);
 
         while (true) {
             if (ButtonAction.okFlag == 1) {
@@ -163,20 +170,428 @@ public class Player {
         p2.roundCnt = 0;
         Player.initDiceSelected(p1);
         Player.initDiceSelected(p2);
+
+        Player.roundPlayer = p1;
         Player.playerSelect(p1);
         p1.roundCnt++;
+
+        Player.roundPlayer = p2;
         Player.playerSelect(p2);
         p2.roundCnt++;
+
+        Player.roundPlayer = p1;
         Player.playerSelect(p1);
         p1.roundCnt++;
+
+        Player.roundPlayer = p2;
         Player.playerSelect(p2);
         p2.roundCnt++;
-//        Player.playerLastSelect(p1);
-//        Player.playerLastSelect(p2);
+
+        Player.roundPlayer = p1;
         Player.playerSelect(p1);
         p1.roundCnt++;
+
+        Player.roundPlayer = p2;
         Player.playerSelect(p2);
         p2.roundCnt++;
+    }
+
+    public static void settle1(Player p1, Player p2) {
+        UpdateUI.gameState = UpdateUI.SETTLE;
+        Arrays.fill(p1.sideCnt, 0);
+        Arrays.fill(p2.sideCnt, 0);
+        for (int i = 0; i < 6; i++) {
+            if (p1.selectedDice[i] == DiceSide.axe ||
+                    p1.selectedDice[i] == DiceSide.axe1 ||
+                    p1.selectedDice[i] == DiceSide.axe2 ||
+                    p1.selectedDice[i] == DiceSide.axe3) {
+                p1.sideCnt[0]++;
+            } else if (p1.selectedDice[i] == DiceSide.arrow) {
+                p1.sideCnt[1]++;
+            } else if (p1.selectedDice[i] == DiceSide.arrowMagic) {
+                p1.sideCnt[2]++;
+            } else if (p1.selectedDice[i] == DiceSide.helmet) {
+                p1.sideCnt[3]++;
+            } else if (p1.selectedDice[i] == DiceSide.helmetMagic) {
+                p1.sideCnt[4]++;
+            } else if (p1.selectedDice[i] == DiceSide.shield) {
+                p1.sideCnt[5]++;
+            } else if (p1.selectedDice[i] == DiceSide.shieldMagic) {
+                p1.sideCnt[6]++;
+            } else if (p1.selectedDice[i] == DiceSide.steal) {
+                p1.sideCnt[7]++;
+            } else if (p1.selectedDice[i] == DiceSide.stealMagic) {
+                p1.sideCnt[8]++;
+            }
+            if (p2.selectedDice[i] == DiceSide.axe ||
+                    p2.selectedDice[i] == DiceSide.axe1 ||
+                    p2.selectedDice[i] == DiceSide.axe2 ||
+                    p2.selectedDice[i] == DiceSide.axe3) {
+                p2.sideCnt[0]++;
+            } else if (p2.selectedDice[i] == DiceSide.arrow) {
+                p2.sideCnt[1]++;
+            } else if (p2.selectedDice[i] == DiceSide.arrowMagic) {
+                p2.sideCnt[2]++;
+            } else if (p2.selectedDice[i] == DiceSide.helmet) {
+                p2.sideCnt[3]++;
+            } else if (p2.selectedDice[i] == DiceSide.helmetMagic) {
+                p2.sideCnt[4]++;
+            } else if (p2.selectedDice[i] == DiceSide.shield) {
+                p2.sideCnt[5]++;
+            } else if (p2.selectedDice[i] == DiceSide.shieldMagic) {
+                p2.sideCnt[6]++;
+            } else if (p2.selectedDice[i] == DiceSide.steal) {
+                p2.sideCnt[7]++;
+            } else if (p2.selectedDice[i] == DiceSide.stealMagic) {
+                p2.sideCnt[8]++;
+            }
+        }//统计结果
+
+//        for (int i = 0; i < 9; i++) {
+//            System.out.print(i + "-" + p1.sideCnt[i] + "  ");
+//        }
+//        System.out.println();
+//        for (int i = 0; i < 9; i++) {
+//            System.out.print(i + "-" + p2.sideCnt[i] + "  ");
+//        }
+//        System.out.println();
+
+        int k1 = 0;
+        int k2 = 1;
+        if (Player.firstPlayer == Player.player1) {
+            k1 = 0;
+            k2 = 1;
+        } else {
+            k1 = 1;
+            k2 = 0;
+        }
+        int pos = 0;
+        pos = Math.max(p1.sideCnt[0], p2.sideCnt[3] + p2.sideCnt[4]);
+        for (int i = 0; i < pos; i++) {
+            if (i < p1.sideCnt[0]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/axe.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(false);
+            }
+            if (i < p2.sideCnt[3]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/helmet.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else if (i < p2.sideCnt[3] + p2.sideCnt[4]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/helmetMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(false);
+            }
+        }//结算先手斧子
+
+        for (int i = pos; i < pos + Math.max(p1.sideCnt[1] + p1.sideCnt[2], p2.sideCnt[5] + p2.sideCnt[6]); i++) {
+            if (i < pos + p1.sideCnt[1]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/arrow.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else if (i < pos + p1.sideCnt[1] + p1.sideCnt[2]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/arrowMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(false);
+            }
+            if (i < pos + p2.sideCnt[5]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/shield.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else if (i < pos + p2.sideCnt[5] + p2.sideCnt[6]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/shieldMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(false);
+            }
+        }
+        //结算先手弓箭
+        pos = pos + Math.max(p1.sideCnt[1] + p1.sideCnt[2], p2.sideCnt[5] + p2.sideCnt[6]);
+
+        for (int i = pos; i < pos + Math.max(p1.sideCnt[3] + p1.sideCnt[4], p2.sideCnt[0]); i++) {
+            if (i < pos + p1.sideCnt[3]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/helmet.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else if (i < pos + p1.sideCnt[3] + p1.sideCnt[4]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/helmetMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(false);
+            }
+            if (i < pos + p2.sideCnt[0]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/axe.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(false);
+            }
+        }
+        //后手斧子
+        pos = pos + Math.max(p1.sideCnt[3] + p1.sideCnt[4], p2.sideCnt[0]);
+
+        for (int i = pos; i < pos + Math.max(p1.sideCnt[5] + p1.sideCnt[6], p2.sideCnt[1] + p2.sideCnt[2]); i++) {
+            if (i < pos + p1.sideCnt[5]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/shield.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else if (i < pos + p1.sideCnt[5] + p1.sideCnt[6]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/shieldMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(false);
+            }
+            if (i < pos + p2.sideCnt[1]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/arrow.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else if (i < pos + p2.sideCnt[1] + p2.sideCnt[2]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/arrowMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else {
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(false);
+            }
+        }
+        //后手弓箭
+        pos = pos + Math.max(p1.sideCnt[5] + p1.sideCnt[6], p2.sideCnt[1] + p2.sideCnt[2]);
+
+        for (int i = pos; i < pos + Math.max(p1.sideCnt[7] + p1.sideCnt[8], p2.sideCnt[7] + p2.sideCnt[8]); i++) {
+            if (i < pos + p1.sideCnt[7]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/steal.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            } else if (i < pos + p1.sideCnt[7] + p1.sideCnt[8]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/stealMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k1][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k1][i].setVisible(true);
+            }
+            if (i < pos + p2.sideCnt[7]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/steal.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            } else if (i < pos + p2.sideCnt[7] + p2.sideCnt[8]) {
+                ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/stealMagic.png"));
+                diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+                MainFrame.mainFrame.settleLabels[k2][i].setIcon(diceImageIcon);
+                MainFrame.mainFrame.settleLabels[k2][i].setVisible(true);
+            }
+        }
+        //steal
+
+
+    }
+
+    public static void settle2(Player p1, Player p2) {
+        int pos = 0;
+        p1.blockCnt = 0;
+        p2.blockCnt = 0;
+
+        if (p1.sideCnt[2] + p1.sideCnt[4] + p1.sideCnt[6] + p1.sideCnt[8] + p2.sideCnt[2] + p2.sideCnt[4] + p2.sideCnt[6] + p2.sideCnt[8] != 0) {
+            MainFrame.mainFrame.okButton.setVisible(true);
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            p1.magic = p1.magic + p1.sideCnt[2] + p1.sideCnt[4] + p1.sideCnt[6] + p1.sideCnt[8];
+            p2.magic = p2.magic + p2.sideCnt[2] + p2.sideCnt[4] + p2.sideCnt[6] + p2.sideCnt[8];
+        }
+
+        if (p1.sideCnt[0] + p2.sideCnt[3] + p2.sideCnt[4] != 0) {
+            MainFrame.mainFrame.okButton.setVisible(true);
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            for (int i = 0; i < Math.max(p1.sideCnt[0], p2.sideCnt[3] + p2.sideCnt[4]); i++) {
+                MainFrame.mainFrame.settleLabels[0][i].setVisible(false);
+                MainFrame.mainFrame.settleLabels[1][i].setVisible(false);
+            }
+            pos = Math.max(p1.sideCnt[0], p2.sideCnt[3] + p2.sideCnt[4]);
+            p2.blockCnt += Math.min(p1.sideCnt[0], p2.sideCnt[3] + p2.sideCnt[4]);
+            if (p1.sideCnt[0] > p2.sideCnt[3] + p2.sideCnt[4]) {
+                p2.hp = p2.hp - (p1.sideCnt[0] - (p2.sideCnt[3] + p2.sideCnt[4]));
+            }
+            isLose(p1, p2);
+            if (ButtonAction.loseFlag == 1) {
+                return;
+            }
+        }
+
+        if (p1.sideCnt[1] + p1.sideCnt[2] + p2.sideCnt[5] + p2.sideCnt[6] != 0) {
+            MainFrame.mainFrame.okButton.setVisible(true);
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            for (int i = pos; i < pos + Math.max(p1.sideCnt[1] + p1.sideCnt[2], p2.sideCnt[5] + p2.sideCnt[6]); i++) {
+                MainFrame.mainFrame.settleLabels[0][i].setVisible(false);
+                MainFrame.mainFrame.settleLabels[1][i].setVisible(false);
+            }
+            pos = pos + Math.max(p1.sideCnt[1] + p1.sideCnt[2], p2.sideCnt[5] + p2.sideCnt[6]);
+            p2.blockCnt += Math.min(p1.sideCnt[1] + p1.sideCnt[2], p2.sideCnt[5] + p2.sideCnt[6]);
+            if (p1.sideCnt[1] + p1.sideCnt[2] > p2.sideCnt[5] + p2.sideCnt[6]) {
+                p2.hp = p2.hp - ((p1.sideCnt[1] + p1.sideCnt[2]) - (p2.sideCnt[5] + p2.sideCnt[6]));
+            }
+            isLose(p1, p2);
+            if (ButtonAction.loseFlag == 1) {
+                return;
+            }
+        }
+
+        if (p1.sideCnt[3] + p1.sideCnt[4] + p2.sideCnt[0] != 0) {
+            MainFrame.mainFrame.okButton.setVisible(true);
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            for (int i = pos; i < pos + Math.max(p1.sideCnt[3] + p1.sideCnt[4], p2.sideCnt[0]); i++) {
+                MainFrame.mainFrame.settleLabels[0][i].setVisible(false);
+                MainFrame.mainFrame.settleLabels[1][i].setVisible(false);
+            }
+            pos = pos + Math.max(p1.sideCnt[3] + p1.sideCnt[4], p2.sideCnt[0]);
+            p1.blockCnt += Math.min(p1.sideCnt[3] + p1.sideCnt[4], p2.sideCnt[0]);
+            if (p1.sideCnt[3] + p1.sideCnt[4] < p2.sideCnt[0]) {
+                p1.hp = p1.hp - (p2.sideCnt[0] - (p1.sideCnt[3] + p1.sideCnt[4]));
+            }
+            isLose(p1, p2);
+            if (ButtonAction.loseFlag == 1) {
+                return;
+            }
+        }
+
+        if (p1.sideCnt[5] + p1.sideCnt[6] + p2.sideCnt[1] + p2.sideCnt[2] != 0) {
+            MainFrame.mainFrame.okButton.setVisible(true);
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            for (int i = pos; i < pos + Math.max(p1.sideCnt[5] + p1.sideCnt[6], p2.sideCnt[1] + p2.sideCnt[2]); i++) {
+                MainFrame.mainFrame.settleLabels[0][i].setVisible(false);
+                MainFrame.mainFrame.settleLabels[1][i].setVisible(false);
+            }
+            pos = pos + Math.max(p1.sideCnt[5] + p1.sideCnt[6], p2.sideCnt[1] + p2.sideCnt[2]);
+            p1.blockCnt += Math.min(p1.sideCnt[5] + p1.sideCnt[6], p2.sideCnt[1] + p2.sideCnt[2]);
+            if (p2.sideCnt[1] + p2.sideCnt[2] > p1.sideCnt[5] + p1.sideCnt[6]) {
+                p1.hp = p1.hp - ((p2.sideCnt[1] + p2.sideCnt[2]) - (p1.sideCnt[5] + p1.sideCnt[6]));
+            }
+            isLose(p1, p2);
+            if (ButtonAction.loseFlag == 1) {
+                return;
+            }
+        }
+
+        if (p1.sideCnt[7] + p1.sideCnt[8] + p2.sideCnt[7] + p2.sideCnt[8] != 0) {
+            MainFrame.mainFrame.okButton.setVisible(true);
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            for (int i = 0; i < 12; i++) {
+                MainFrame.mainFrame.settleLabels[0][i].setVisible(false);
+                MainFrame.mainFrame.settleLabels[1][i].setVisible(false);
+            }
+            p1.magic = p1.magic + Math.min(p1.sideCnt[7] + p1.sideCnt[8], p2.magic);
+            p2.magic = p2.magic - Math.min(p1.sideCnt[7] + p1.sideCnt[8], p2.magic);
+
+            p2.magic = p2.magic + Math.min(p2.sideCnt[7] + p2.sideCnt[8], p1.magic);
+            p1.magic = p1.magic - Math.min(p2.sideCnt[7] + p2.sideCnt[8], p1.magic);
+        }
+
+        if (p1.godsGraceNum != 0) {
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            switch (p1.godsGraceNum) {
+                case 1:
+                    Gods.thor(p1, p2, p1.godsGraceLevel);
+                    break;
+                case 2:
+                    Gods.heimdallr(p1, p2, p1.godsGraceLevel);
+                    break;
+            }
+            p1.godsGraceNum = 0;
+            isLose(p1, p2);
+        }
+
+        if (p2.godsGraceNum != 0) {
+            ButtonAction.okFlag = 0;
+            while (true) {
+                if (ButtonAction.okFlag == 1) {
+                    break;
+                }
+            }
+            ButtonAction.okFlag = 0;
+
+            switch (p2.godsGraceNum) {
+                case 1:
+                    Gods.thor(p2, p1, p2.godsGraceLevel);
+                    break;
+                case 2:
+                    Gods.heimdallr(p2, p1, p2.godsGraceLevel);
+                    break;
+            }
+            p2.godsGraceNum = 0;
+            isLose(p2, p1);
+        }
+
+        Player.initDiceSelected(p1);
+        Player.initDiceSelected(p2);
     }
 
     public static void settle(Player p1, Player p2) {
@@ -186,7 +601,7 @@ public class Player {
         int magic2 = 0, axe2 = 0, helmat2 = 0, arrow2 = 0, shield2 = 0, steal2 = 0;
         p1.blockCnt = 0;
         p2.blockCnt = 0;
-        for (int i = 0; i < 6; i++) {//结算魔力magic值
+        for (int i = 0; i < 6; i++) {//结算
             if (DiceSide.isMagic(p1.selectedDice[i])) {
                 magic1++;
             }
@@ -225,6 +640,91 @@ public class Player {
                 steal2++;
             }
         }
+
+//        int paintSettleCnt1 = 0;
+//        int paintSettleCnt2 = 0;
+//        if (Player.firstPlayer == Player.player1) {
+//            for (int i = 0; i < 6; i++) {
+//                if (Player.player1.selectedDice[i] == DiceSide.axe ||
+//                        Player.player1.selectedDice[i] == DiceSide.axe1 ||
+//                        Player.player1.selectedDice[i] == DiceSide.axe2 ||
+//                        Player.player1.selectedDice[i] == DiceSide.axe3) {
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/axe.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels1[paintSettleCnt1].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels1[paintSettleCnt1].setVisible(true);
+//                    paintSettleCnt1++;
+//                }
+//            }
+//            for (int i = 0; i < 6; i++) {
+//                if (Player.player2.selectedDice[i] == DiceSide.helmet) {
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/helmet.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setVisible(true);
+//                    paintSettleCnt2++;
+//                }else if(Player.player2.selectedDice[i] == DiceSide.helmetMagic){
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/helmetMagic.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setVisible(true);
+//                    paintSettleCnt2++;
+//                }
+//            }
+//            if (paintSettleCnt1 < paintSettleCnt2) {
+//                for (int i = paintSettleCnt1; i < paintSettleCnt2; i++) {
+//                    MainFrame.mainFrame.settleLabels1[i].setVisible(false);
+//                }
+//            } else {
+//                for (int i = paintSettleCnt2; i < paintSettleCnt1; i++) {
+//                    MainFrame.mainFrame.settleLabels2[i].setVisible(false);
+//                }
+//            }
+//            paintSettleCnt1 = paintSettleCnt2 = Math.max(paintSettleCnt1, paintSettleCnt2);
+//            //先手斧头对后手头盔
+//
+//            for (int i = 0; i < 6; i++) {
+//                if(Player.player1.selectedDice[i] == DiceSide.arrow){
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/arrow.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels1[paintSettleCnt1].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels1[paintSettleCnt1].setVisible(true);
+//                    paintSettleCnt1++;
+//                }else if(Player.player1.selectedDice[i] == DiceSide.arrowMagic){
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/arrowMagic.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels1[paintSettleCnt1].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels1[paintSettleCnt1].setVisible(true);
+//                    paintSettleCnt1++;
+//                }
+//            }
+//            for (int i = 0; i < 6; i++) {
+//                if(Player.player2.selectedDice[i] == DiceSide.shield){
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/shield.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setVisible(true);
+//                    paintSettleCnt2++;
+//                }else if(Player.player2.selectedDice[i] == DiceSide.shieldMagic){
+//                    ImageIcon diceImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/shieldMagic.png"));
+//                    diceImageIcon.setImage(diceImageIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setIcon(diceImageIcon);
+//                    MainFrame.mainFrame.settleLabels2[paintSettleCnt2].setVisible(true);
+//                    paintSettleCnt2++;
+//                }
+//            }
+//            if (paintSettleCnt1 < paintSettleCnt2) {
+//                for (int i = paintSettleCnt1; i < paintSettleCnt2; i++) {
+//                    MainFrame.mainFrame.settleLabels1[i].setVisible(false);
+//                }
+//            } else {
+//                for (int i = paintSettleCnt2; i < paintSettleCnt1; i++) {
+//                    MainFrame.mainFrame.settleLabels2[i].setVisible(false);
+//                }
+//            }
+//            paintSettleCnt1 = paintSettleCnt2 = Math.max(paintSettleCnt1, paintSettleCnt2);
+//            //先手弓箭对后手盾牌
+//        }
 
         p1.magic += magic1;
         p2.magic += magic2;
@@ -323,14 +823,17 @@ public class Player {
         isLose(p2, p1);
     }
 
-//    public static void rintPlayerState(Player player) {
-//        System.out.println("====" + player.name + "的状态====");
-//        System.out.println(player.name + "的血量:" + player.hp);
-//        System.out.println(player.name + "的魔力:" + player.magic);
-//    }
-
     public static void godsGracePlay(Player player) {
         MainFrame.mainFrame.textArea.setText("====众神恩惠阶段====\n" + "请" + player.name + "选择是否要使用众神恩惠(是/否)");
+        MainFrame.mainFrame.godsGraceBtn1.setVisible(true);
+        MainFrame.mainFrame.godsGraceBtn2.setVisible(true);
+        MainFrame.mainFrame.coinTextLabel1.setVisible(true);
+        MainFrame.mainFrame.coinTextLabel2.setVisible(true);
+        MainFrame.mainFrame.coinTextLabel1.setText("————众神恩惠阶段————");
+        MainFrame.mainFrame.coinTextLabel2.setText(player.name + "选择是否要使用众神恩惠");
+        MainFrame.mainFrame.okButton.setVisible(false);
+        MainFrame.mainFrame.coinTextLabel1.setVisible(true);
+        MainFrame.mainFrame.coinTextLabel2.setVisible(true);
         ButtonAction.godsFlag = -1;
         while (true) {
             if (ButtonAction.godsFlag != -1) {
@@ -340,13 +843,26 @@ public class Player {
         if (ButtonAction.godsFlag == 1) {
             ButtonAction.godsFlag = -1;
             MainFrame.mainFrame.textArea.setText("请" + player.name + "选择向哪位众神献祭\n" + "-索尔怒袭--1\n" + "-海姆达尔之眼--2\n");
+            MainFrame.mainFrame.coinTextLabel1.setText(Player.roundPlayer.name + "选择众神进行献祭");
+            MainFrame.mainFrame.coinTextLabel2.setText("索尔怒袭/海姆达尔之眼");
+            MainFrame.mainFrame.coinTextLabel1.setVisible(true);
+            MainFrame.mainFrame.coinTextLabel2.setVisible(true);
             while (true) {
                 if (ButtonAction.godsGraceNum != 0) {
                     break;
                 }
             }
+            MainFrame.mainFrame.coinTextLabel1.setVisible(false);
+            MainFrame.mainFrame.coinTextLabel2.setVisible(false);
             player.godsGraceNum = ButtonAction.godsGraceNum;
             ButtonAction.godsGraceNum = 0;
+
+            for (int i = 0; i < 3; i++) {
+                MainFrame.mainFrame.levelBtns[i].setVisible(true);
+            }
+            MainFrame.mainFrame.coinTextLabel1.setText("请选择献祭等级");
+            MainFrame.mainFrame.coinTextLabel1.setVisible(true);
+
             switch (player.godsGraceNum) {
                 case 1:
                     MainFrame.mainFrame.textArea.setText("请选择消耗的魔力值(索尔怒袭)\n"
@@ -375,22 +891,34 @@ public class Player {
                     ButtonAction.godsLevelNum = 0;
                     break;
             }
+
+            for (int i = 0; i < 3; i++) {
+                MainFrame.mainFrame.levelBtns[i].setVisible(false);
+            }
+            MainFrame.mainFrame.coinTextLabel1.setVisible(false);
+
         }
+        MainFrame.mainFrame.coinTextLabel1.setVisible(false);
+        MainFrame.mainFrame.coinTextLabel2.setVisible(false);
     }
 
     public static void godsGrace(Player p1, Player p2) {
+        Player.roundPlayer = p1;
         godsGracePlay(p1);
+        Player.roundPlayer = p2;
         godsGracePlay(p2);
     }
 
     public static void isLose(Player p1, Player p2) {
         if (p2.hp <= 0) {
-            System.out.println("游戏结束，" + p1.name + "战胜了" + p2.name);
-            System.exit(0);
+            MainFrame.mainFrame.coinTextLabel2.setText("游戏结束，" + p1.name + "战胜了" + p2.name);
+            MainFrame.mainFrame.coinTextLabel2.setVisible(true);
+            ButtonAction.loseFlag = 1;
         }
         if (p1.hp <= 0) {
-            System.out.println("游戏结束，" + p2.name + "战胜了" + p1.name);
-            System.exit(0);
+            MainFrame.mainFrame.coinTextLabel2.setText("游戏结束，" + p1.name + "战胜了" + p2.name);
+            MainFrame.mainFrame.coinTextLabel2.setVisible(true);
+            ButtonAction.loseFlag = 1;
         }
     }
 }
