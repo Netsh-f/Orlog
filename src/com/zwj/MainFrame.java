@@ -343,6 +343,7 @@ public class MainFrame extends JFrame {
 //        startBtn.setBorderPainted(false);//去边框
         startBtn.setFocusPainted(false);//去焦点
         startBtn.setForeground(Color.GRAY);
+//        startBtn.setToolTipText("这是开始游戏的按钮");
         mainGamePanel.add(startBtn);
 
         helpBtn.setBounds(1180, 635, 230, 70);
