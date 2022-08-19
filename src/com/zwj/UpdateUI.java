@@ -137,7 +137,7 @@ public class UpdateUI implements Runnable {
                 MainFrame.mainFrame.startBtn.setVisible(true);
                 MainFrame.mainFrame.helpBtn.setVisible(true);
                 MainFrame.mainFrame.titleLabel.setVisible(true);
-                MusicPlayer.startMusic2.start(true);
+//                MusicPlayer.startMusic2.start(true);
                 UpdateUI.gameState = UpdateUI.NORMAL;
                 MainFrame.mainFrame.coinTextLabel1.setText("玩家1决定正面还是背面？");
                 MainFrame.mainFrame.coinTextLabel2.setText("通过掷硬币来决定先手");

@@ -3,20 +3,15 @@ package com.zwj;
 import java.applet.AudioClip;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class test {
-    public static void main(String[] args) throws Exception {
-        File file = new File("/");
-        System.out.println("/ 代表的绝对路径为：" + file.getAbsolutePath());
-
-        File file1 = new File(".");
-        System.out.println(". 代表的绝对路径为" + file1.getAbsolutePath());
-
-        File file2 = new File("");
-        System.out.println(" 代表的绝对路径为" + file2.getAbsolutePath());
+    public static void main(String[] args) {
 
         MainFrame.mainFrame.init();
+
         MusicPlayer.startMusic1.start(false);
         MusicPlayer.startMusic2.start(true);
 
