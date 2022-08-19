@@ -22,10 +22,6 @@ public class MusicPlayer {
         }
     }
 
-//    static MusicPlayer startMusic1 = new MusicPlayer("music/startMusic1.wav");
-//    static MusicPlayer startMusic2 = new MusicPlayer("music/startMusic2.wav");
-//    static MusicPlayer gamingMusic1 = new MusicPlayer("music/gamingMusic1.wav");
-
     private String musicPath; //音频文件
     private volatile boolean run = true; //记录音频是否播放
     private Thread mainThread;  //播放音频的任务线程

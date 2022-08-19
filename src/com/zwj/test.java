@@ -7,14 +7,6 @@ import java.net.URISyntaxException;
 
 public class test {
     public static void main(String[] args) throws Exception {
-        File file = new File("/");
-        System.out.println("/ 代表的绝对路径为：" + file.getAbsolutePath());
-
-        File file1 = new File(".");
-        System.out.println(". 代表的绝对路径为" + file1.getAbsolutePath());
-
-        File file2 = new File("");
-        System.out.println(" 代表的绝对路径为" + file2.getAbsolutePath());
 
         MainFrame.mainFrame.init();
         MusicPlayer.startMusic1.start(false);
