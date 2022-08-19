@@ -2,13 +2,25 @@ package com.zwj;
 
 import javax.sound.sampled.*;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class MusicPlayer {
 
-    static MusicPlayer startMusic1 = new MusicPlayer(test.class.getClassLoader().getResource("music/startMusic1.wav").getPath());
-    static MusicPlayer startMusic2 = new MusicPlayer(test.class.getClassLoader().getResource("music/startMusic2.wav").getPath());
-    static MusicPlayer gamingMusic1 = new MusicPlayer(test.class.getClassLoader().getResource("music/gamingMusic1.wav").getPath());
+    static MusicPlayer startMusic1;
+    static MusicPlayer startMusic2;
+    static MusicPlayer gamingMusic1;
+
+    static {
+        try {
+            startMusic1 = new MusicPlayer(new URL("file:sound//startMusic1.wav").getPath());
+            startMusic2 = new MusicPlayer(new URL("file:sound/startMusic2.wav").getPath());
+            gamingMusic1 = new MusicPlayer(new URL("file:sound/gamingMusic1.wav").getPath());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 //    static MusicPlayer startMusic1 = new MusicPlayer("music/startMusic1.wav");
 //    static MusicPlayer startMusic2 = new MusicPlayer("music/startMusic2.wav");
