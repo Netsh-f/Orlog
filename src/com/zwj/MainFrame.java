@@ -166,6 +166,7 @@ public class MainFrame extends JFrame {
         };
 
         mainGamePanel.setLayout(null);
+        mainFrame.setTitle("ÃüÔËÖ®Ï·Orlog");
 
         for (int i = 0; i < 2; i++) {
             ImageIcon coinImageIcon = new ImageIcon(test.class.getClassLoader().getResource("image/coin" + (i + 1) + ".png"));

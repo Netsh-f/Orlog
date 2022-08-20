@@ -123,10 +123,16 @@ public class ButtonAction {
     }
 
     public static void godsGraceNum1() {
+        MainFrame.mainFrame.levelBtns[0].setToolTipText("4点魔力造成2点伤害");
+        MainFrame.mainFrame.levelBtns[1].setToolTipText("8点魔力造成5点伤害");
+        MainFrame.mainFrame.levelBtns[2].setToolTipText("12点魔力造成8点伤害");
         godsGraceNum = 1;
     }
 
     public static void godsGraceNum2() {
+        MainFrame.mainFrame.levelBtns[0].setToolTipText("4点魔力每格挡一次攻击+1点生命值");
+        MainFrame.mainFrame.levelBtns[1].setToolTipText("7点魔力每格挡一次攻击+2点生命值");
+        MainFrame.mainFrame.levelBtns[2].setToolTipText("10点魔力每格挡一次攻击+3点生命值");
         godsGraceNum = 2;
     }
 
